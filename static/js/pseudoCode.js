@@ -23,6 +23,34 @@ function buildTable(data) {
   });
 }
 
+// funtion to build filter items with tdistinct values
+function buildFilters(tableData) {
+  
+// initialize local lists for the unique values
+  let datetimeUnique = [], cityUnique = [], stateUnique = [], countryUnique = [], shapeUnique = [];
+
+  const distinct = (value, index, self) => {
+    return self.indexOf(value) === index;
+  }
+  
+  //loop through the tableData keys
+  tableData.forEach((dataRow) => {
+    datetimeUnique.push(dataRow.datetime);
+    cityUnique.push(dataRow.city);
+    stateUnique.push(dataRow.state);
+    countryUnique.push(dataRow.country);
+    shapeUnique.push(dataRow.shape);
+  });
+  datetimeUnique = datetimeUnique.filter(distinct);
+  cityUnique = cityUnique.filter(distinct);
+  stateUnique = stateUnique.filter(distinct);
+  countryUnique = countryUnique.filter(distinct);
+  shapeUnique = shapeUnique.filter(distinct);
+
+//now build the select elements form these lists.
+
+}
+
 //var filters = {datetime:"",city:"",state:"",country:"",shape:""};
 
 // This function will replace your handleClick function
@@ -52,11 +80,9 @@ function filterTable(filters) {
 
   // Loop through all of the filters and keep any data that
   // matches the filter values
-  Object.keys(filters).forEach((val) => {
-
+  Object.keys(filters).forEach((val) =>
     filteredData = filteredData.filter(row => row[val] === filters[val])
-  });
-
+  );
 
   // Finally, rebuild the table using the filtered Data
   buildTable(filteredData);
@@ -64,7 +90,7 @@ function filterTable(filters) {
 
 // Attach an event to listen for changes to each filter
 // Hint: You'll need to select the event and what it is listening for within each set of parenthesis
-//d3.selectAll().on();
+d3.selectAll("input").on("blur", updateFilters);
 // Attach an event to listen for the form button
 d3.selectAll("#filter-btn").on("click", updateFilters);
 // Build the table when the page loads
