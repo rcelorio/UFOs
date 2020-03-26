@@ -22,6 +22,8 @@ function buildTable(data) {
     });
   }
 
+
+
   function handleClick() {
     // Grab the datetime value from the filter
     let date = d3.select("#datetime").property("value");
@@ -41,4 +43,5 @@ function buildTable(data) {
   // Attach an event to listen for the form button
   d3.selectAll("#filter-btn").on("click", handleClick);
   // Build the table when the page loads
+  
   buildTable(tableData);
