@@ -8,6 +8,7 @@ function buildTable(data) {
   // First, clear out any existing data
   tbody.html("");
 
+ 
   // Next, loop through each object in the data
   // and append a row and cells for each value in the row
   data.forEach((dataRow) => {
@@ -21,6 +22,20 @@ function buildTable(data) {
       cell.text(val);
     });
   });
+}
+
+function buildOptions(obj,name) {
+//now build the select elements form these lists.
+var optList = d3.select("#" + name);
+
+//clear html
+optList.html("");
+optList.append("option");
+obj.forEach((val) => {
+  let cell = optList.append("option");
+      cell.text(val);     
+  });
+
 }
 
 // funtion to build filter items with tdistinct values
@@ -47,7 +62,12 @@ function buildFilters(tableData) {
   countryUnique = countryUnique.filter(distinct);
   shapeUnique = shapeUnique.filter(distinct);
 
-//now build the select elements form these lists.
+  buildOptions(datetimeUnique,'datetime');
+  buildOptions(cityUnique,'city');
+  buildOptions(stateUnique,'state');
+  buildOptions(countryUnique,'country');
+  buildOptions(shapeUnique,'shape');
+
 
 }
 
@@ -61,14 +81,22 @@ function updateFilters() {
   Object.keys(filters).forEach((val) => {
     // If a filter value was entered then add that filterId and value
     // to the filters list. Otherwise, clear that filter from the filters object
-    if (d3.select("#" + val).property("value") == "") {
+ 
+      if (d3.select("#" + val).node().value == "") {
+        delete filters[val];
+      }
+      else
+      {
+        filters[val] = d3.select("#" + val).node().value;
+      }
+/*    if (d3.select("#" + val).property("value") == "") {
       delete filters[val];
     } 
     else 
     {
       filters[val] = d3.select("#" + val).property("value");
-    }
-  });
+    } */
+  }); 
   // Call function to apply all filters and rebuild the table
   filterTable(filters);
 }
@@ -90,8 +118,12 @@ function filterTable(filters) {
 
 // Attach an event to listen for changes to each filter
 // Hint: You'll need to select the event and what it is listening for within each set of parenthesis
-d3.selectAll("input").on("blur", updateFilters);
+//d3.selectAll("input").on("blur", updateFilters);
+d3.selectAll("select").on("mouseout", updateFilters);
 // Attach an event to listen for the form button
 d3.selectAll("#filter-btn").on("click", updateFilters);
+
+d3.selectAll("#reset-btn").on("click", buildTable(tableData));
 // Build the table when the page loads
+// buildFilters(tableData); 
 buildTable(tableData);
