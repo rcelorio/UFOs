@@ -6,6 +6,6 @@ The page and filters work as expected but our dataset is static. Future developm
 
 ## Resources
 * index.html - HTML template
-* js/app.js - JavaScript code
-* css/style.css - local style sheet
-* images/nasa.jpg - image used in the page
+* statis/js/app.js - JavaScript code
+* static/css/style.css - local style sheet
+* static/images/nasa.jpg - image used in the page
